@@ -2,39 +2,39 @@ import axios from 'axios'
 import baseconfig from "./baseconfig"
 axios.defaults.withCredentials = true;
 //添加一个请求拦截器
-axios.interceptors.request.use(function(config) {
-  var host = window.location.host;
-  if (localStorage.getItem(host + "tenantCode") != null) {
-    config.headers['tenantCode'] = localStorage.getItem(host + "tenantCode");
-  }
+// axios.interceptors.request.use(function(config) {
+//   var host = window.location.host;
+//   if (localStorage.getItem(host + "tenantCode") != null) {
+//     config.headers['tenantCode'] = localStorage.getItem(host + "tenantCode");
+//   }
 
-  if (process.env.NODE_ENV == 'production') {
-    config.headers['X-Domain'] = host;
-  }else{
-    config.headers['X-Domain'] = "";
-  }
-  config.headers['X-Token'] = localStorage.getItem(host + "X-Token");
-  config.headers['X-User'] = localStorage.getItem(host + "X-User");
+//   if (process.env.NODE_ENV == 'production') {
+//     config.headers['X-Domain'] = host;
+//   }else{
+//     config.headers['X-Domain'] = "";
+//   }
+//   config.headers['X-Token'] = localStorage.getItem(host + "X-Token");
+//   config.headers['X-User'] = localStorage.getItem(host + "X-User");
 
-  return config;
-}, function(error) {
-  // Do something with request error
-  return Promise.reject(error);
-});
+//   return config;
+// }, function(error) {
+//   // Do something with request error
+//   return Promise.reject(error);
+// });
 
-//添加一个响应拦截器
-axios.interceptors.response.use(function(response) {
-  if (response.data && response.data.errcode) {
-    if (parseInt(response.data.errcode) === 40001) {
-      //未登录
-      console.log('登录信息已失效，请重新登录！');
-    }
-  }
-  return response;
-}, function(error) {
-  // Do something with response error
-  return Promise.reject(error);
-});
+// 添加一个响应拦截器
+// axios.interceptors.response.use(function(response) {
+//   if (response.data && response.data.errcode) {
+//     if (parseInt(response.data.errcode) === 40001) {
+//       //未登录
+
+//     }
+//   }
+//   return response;
+// }, function(error) {
+//   // Do something with response error
+//   return Promise.reject(error);
+// });
 
 let base = baseconfig.baseUrl;
 let server = baseconfig.serverUrl;

@@ -1,64 +1,74 @@
 <template>
     <div>
         <button @click="getSelectedRows()">Get Selected Rows</button>
-        <ag-grid-vue style="width: 500px; height: 500px;"
-                     class="ag-theme-alpine"
-                     :columnDefs="columnDefs"
-                     :rowData="rowData"
-                     rowSelection="multiple"
 
-                     @grid-ready="onGridReady">
-        </ag-grid-vue>
+         <ag-grid-vue
+                :style="{width:width,height:height}"
+                class="ag-theme-alpine"
+                @grid-ready="onGridReady"
+                :columnDefs="columnDefs"
+                :defaultColDef="defaultColDef"
+                :singleClickEdit="true"
+                :modules="modules"
+                :rowData="rowData"></ag-grid-vue>
     </div>
+
 </template>
 
 <script>
+    import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
     import {AgGridVue} from "ag-grid-vue";
-
     export default {
         name: 'App',
         data() {
-            return {
-                columnDefs: null,
-                rowData: null,
-                gridApi: null,
-                columnApi: null,
-                autoGroupColumnDef: null
-            }
+        return {
+           gridApi: null,
+           columnApi: null, 
+           defaultColDef: null,                    //配置表格默认行为
+           modules: [ClientSideRowModelModule],   //表格编辑组件
+         };
+        },
+        props:{
+          width: {
+               type: String,
+               required: false,
+               default:"1280px"
+          },
+          height: {
+               type: String,
+               required: false,
+               default:"500px"
+          },
+          columnDefs:{
+               required: false,
+               default:null
+          },
+          rowData:{
+               required: false,
+               default:null
+          }
         },
         components: {
             AgGridVue
         },
         methods: {
-            onGridReady(params) {
-                this.gridApi = params.api;
-                this.columnApi = params.columnApi;
+            onGridReady(params) {    //agGrid属性,初始化变量
+                this.gridApi = params.api;                      //获取表格的api
+                this.columnApi = params.columnApi;              //获取列的api
             },
             getSelectedRows() {
                 const selectedNodes = this.gridApi.getSelectedNodes();
-                const selectedData = selectedNodes.map(node => node.data);
-                const selectedDataStringPresentation = selectedData.map(node => node.make + ' ' + node.model).join(', ');
-                alert(`Selected nodes: ${selectedDataStringPresentation}`);
             }
         },
         beforeMount() {
-            this.columnDefs = [
-                {headerName: 'Make', field: 'make'},
-                {headerName: 'Model', field: 'model'},
-                {headerName: 'Price', field: 'price'}
-            ];
-
-            this.autoGroupColumnDef = {
-                headerName: 'Model',
-                field: 'model',
-                cellRenderer: 'agGroupCellRenderer',
-                cellRendererParams: {
-                    checkbox: true
-                }
-            };
+                   this.defaultColDef = {
+                      //  flex: 3,
+                          editable: true,
+                    };
         }
     }
 </script>
 
-<style>
+<style  scoped>
+
 </style>

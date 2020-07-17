@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style>
 /* 引入国外ag-grid组件样式表 */
 @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
 @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";

@@ -11,7 +11,7 @@
     </div>
 
     <div class="big_box">
-      <div v-for="(item,id) in boxArr " :key="id" :style="item.bg" class="box">
+      <div v-for="(item,id) in boxArr " :key="id" :style="item.bg" class="box" @click="goRouterFn(item.id)">
         <p class="box_text">{{item.admin}}</p>
         <p :class="'iconfont'+' '+item.icon" class="icon_text" ></p>
       </div>
@@ -34,13 +34,16 @@ export default {
       boxArr:[
         {bg:'background:#358FFE',
         admin:'设备管理',
-        icon:'icon-diannao'},
+        icon:'icon-diannao',
+        id:1,},
         {bg:'background:#B982EA',
-          admin:'门店管理',
-        icon:'icon-fangzihouse128'},
+        admin:'门店管理',
+        icon:'icon-fangzihouse128',
+        id:2,},
         {bg:'background:#FFA726',
-          admin:'运营管理',
-        icon:'icon-shuaxin'},
+        admin:'运营管理',
+        icon:'icon-shuaxin',
+        id:3,},
         {bg:'background:#6CC4DE',
           admin:'APP管理',
         icon:'icon-ziyuan'},
@@ -70,7 +73,11 @@ export default {
 
  },
   methods: {
-
+        goRouterFn(index){
+          if(index==1){
+            this.$router.push({path:"/platform/equipment/supplier"})
+          }
+        }
 
   },
   created() {
@@ -92,7 +99,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import "../assets/less/public.less";
+  @import "../styles/less/public.less";
   .warp{
     height: 100vh;
     background-image: url("../assets/pc_bg.jpg");

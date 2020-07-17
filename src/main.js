@@ -14,6 +14,7 @@ Vue.use(ElementUI)
 
 
 
+
 //四种请求封装封装ok后，写入原型链上面
 Vue.prototype.$get = get
 Vue.prototype.$post = post
