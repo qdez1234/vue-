@@ -2,31 +2,31 @@
     <div>
         <button @click="getSelectedRows()">Get Selected Rows</button>
 
-         <ag-grid-vue
-                :style="{width:width,height:height}"
-                class="ag-theme-alpine"
-                @grid-ready="onGridReady"
-                :columnDefs="columnDefs"
-                :defaultColDef="defaultColDef"
-                :singleClickEdit="true"
-                :modules="modules"
-                :rowData="rowData"></ag-grid-vue>
-    </div>
+        <ag-grid-vue :style="{width:width,height:height}"
+                     class="ag-theme-alpine"
+                     :columnDefs="columnDefs"
+                     :rowData="rowData"
+                     rowSelection="multiple"
 
+                     @grid-ready="onGridReady">
+        </ag-grid-vue>
+    </div>
+<!-- 
+rowSelection="multiple"     多选框属性
+@grid-ready                grid表格初始化事件
+getSelectedNodes()         获取选中的行 
+-->
 </template>
 
 <script>
-    import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
     import {AgGridVue} from "ag-grid-vue";
     export default {
         name: 'App',
         data() {
-        return {
-           gridApi: null,
-           columnApi: null, 
-           defaultColDef: null,                    //配置表格默认行为
-           modules: [ClientSideRowModelModule],   //表格编辑组件
-         };
+            return {
+                columnDefs: null,
+                rowData: null
+            }
         },
         props:{
           width: {
@@ -38,14 +38,6 @@
                type: String,
                required: false,
                default:"500px"
-          },
-          columnDefs:{
-               required: false,
-               default:null
-          },
-          rowData:{
-               required: false,
-               default:null
           }
         },
         components: {
@@ -58,17 +50,22 @@
             },
             getSelectedRows() {
                 const selectedNodes = this.gridApi.getSelectedNodes();
+
+                const selectedData = selectedNodes.map( node => node.data );
+                
+                console.log(selectedNodes,'我是selectnodes数据')
+
+                const selectedDataStringPresentation = selectedData.map( node => node.make + ' ' + node.model).join(', ');
+
+                alert(`Selected nodes: ${selectedDataStringPresentation}`);
             }
         },
         beforeMount() {
-                   this.defaultColDef = {
-                      //  flex: 3,
-                          editable: true,
-                    };
+
         }
     }
 </script>
 
-<style  scoped>
-
+<style>
 </style>
+

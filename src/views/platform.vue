@@ -1,24 +1,19 @@
 <template>
   <div>
               <public-header></public-header>
-              <public-tab></public-tab>
               <router-view></router-view>
   </div>
 </template>
 
 <script>
 import publicHeader from "@/components/public/publicHeader.vue"
-import publicTab from "@/components/public/publicTab.vue"
-
 export default {
   components: {
          publicHeader,
-         publicTab
   },
   data() {
-    return {
-
-
+    return{
+      
     }
   },
   // 计算属性，会监听依赖属性值随之变化

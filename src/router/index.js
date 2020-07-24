@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 //不同页面路由配置文件 引入
 import equipment from './equipment'
+import userControl from './userControl'
+import system from './system'
+import shop from './shop'
+import operate from './operate'
+
 
 const router = new VueRouter({
     routes: [{
@@ -25,22 +30,34 @@ const router = new VueRouter({
             component: resolve => require(['@/views/home'], resolve),
         },
         ...equipment,
+        ...userControl,
+        ...system,
+        ...shop,
+        ...operate
     ]
 })
-// router.beforeEach((to, from, next) => {
-//   //  let host = window.location.host
-//   //  router.app.$options.store.dispatch('getdbinfo')
-//     if (to.path.startsWith('/login')) {
-//         next()
-//     } 
-// //     else {
-// //         var xtoken = localStorage.getItem(host + "X-Token")
-// //         var token = to.query.token;
-// //         var username = to.query.userName;
-// // 		if(to.query.tenantCode!= undefined){
-// // 			var tenantCode = to.query.tenantCode.replace(' ','+');
-// // 			localStorage.setItem(host + "tenantCode", tenantCode);
-// // 		}
-// //   }
-// })
+
+
+
+router.beforeEach((to, from, next) => {
+      let token = localStorage.getItem('token');
+      if (token == 'true') {                 // 判断本地是否存在token
+        next()
+      } else {
+        // 未登录,跳转到登陆页面,防止死循环这里
+        if (to.path === '/login') {
+            next();
+            return
+        }
+        // next({path: '/login'})
+        next()
+    }
+  });
+
+// 解决重复点击导航路由报错
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+}
+
 export default router

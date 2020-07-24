@@ -1,6 +1,5 @@
 <template>
-  <div class="warp" @click="warpFn()">
-     <agGrid  :columnDefs="columnDefs" :rowData="rowData"></agGrid>
+  <div class="warp " @click="warpFn()" id="loginCss">
     <div class="box">
       <p class="text_a">E-Sharing运营管理平台</p>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" >
@@ -19,6 +18,7 @@
 
 <script>
 import agGrid from "@/components/agGrid"
+import axios from 'axios'
 export default {
   components: {
      agGrid
@@ -27,25 +27,14 @@ export default {
     return {
       ruleForm:{
         userName:'',
-        userPassworld:'',
+        userPassworld:''
       },
       rules: {
        userName: [
             { required: true, message: '请输入账号', trigger: 'blur' },
-            { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' },
-            {
-            pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
-            message: "请输入正确的手机号码",
-            trigger: 'blur'
-            }
           ],
         userPassworld:[
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
-            {pattern:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/,
-             message: "密码是数字加字母组成",
-             trigger: 'blur'
-            }
+            { required: true, message: '请输入密码', trigger: 'blur' }, 
           ]
       }
     }
@@ -63,7 +52,25 @@ export default {
  },
   methods: {
     login(){
-     this.$router.push({ path: 'index' })
+        this.$refs["ruleForm"].validate((valid) => {
+          if (valid) {
+                let params=new FormData();
+                params.append("key","123456")
+                params.append("pwd","6-2b-2c-2d-2e-2f-30")
+                this.$store.dispatch("changeLogin",params).then((res)=>{
+                  console.log(res,'resresrr')
+                  if(res.IsPositive){
+                            this.$message.success({message: '登录成功'});
+                            this.$router.push({ path: 'index' })
+                  }else{    this.$message.success({message: res.Error})}
+                }).catch(error=>{})
+          }else {
+            return false;
+          }
+        });
+
+
+        
     },
     forget(){
     },
@@ -77,17 +84,6 @@ export default {
 
   },
   created() {
-            this.columnDefs = [
-                {headerName: 'Make', field: 'make',},
-                {headerName: 'Model', field: 'model'},
-                {headerName: 'Price', field: 'price'}
-            ];
-
-           this.rowData = [
-            {make: 'Toyota', model: 'Celica', price: 35000},
-            {make: 'Ford', model: 'Mondeo', price: 32000},
-            {make: 'Porsche', model: 'Boxter', price: 72000}
-        ]
 
   },
   mounted() {
@@ -103,7 +99,18 @@ export default {
   activated() {}, // 如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
-<style scoped>
+<style lang="less">
+   #loginCss{
+    .el-form-item__error{
+      top: 80%;
+    }
+   }
+</style>
+
+<style lang="less" scoped>
+  .el-form-item__error{
+    top: 80%;
+  }
   .warp{
     width:100%;
     height:100vh;

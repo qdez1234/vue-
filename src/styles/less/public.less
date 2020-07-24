@@ -1,5 +1,248 @@
-@contentWidth:1280px;  //全局内容区域的统一宽度定义为1280          @定义变量达到全局使用的目的
+@contentWidth:1280px;  //全局内容区域的统一宽度定义为1280          
+@pubBorder: 1px solid rgba(187, 187, 187, 1);   //全局边框样式定义
 
-.publicBordered {      //全局的内容边框样式                       混合（Mixins） 通过 border:.publicBorderd()    类似函数方法调用
-    border: 1px solid #ccc; 
+
+@keyframes ripple-in{  //水滴效果
+    from {
+        transform:translate(-50%,-50%) scale(0);
+        background: rgba(0,0,0,.25);
+    }
+    to {
+        transform:translate(-50%,-50%) scale(1);
+        background: transparent;
+    }
+}
+@keyframes ripple-out{/*仅仅名称不同*/
+    from {
+        transform:translate(-50%,-50%) scale(0);
+        background: rgba(0,0,0,.25);
+    }
+    to {
+        transform:translate(-50%,-50%) scale(1);
+        background: transparent;
+    }
+}
+
+
+.publicBox{              //中间内容区域大小设置
+     width: 1280px;
+     margin: 0 auto;
+}
+#publicSearch{        //搜索区域大小
+     padding-top: 12px;
+     .el-form-item__label{
+         padding-right: 12px;
+     }
+     .el-button:focus, .el-button:hover{
+        :after{
+            content: '';
+            position: absolute;
+            width: 100%;
+            padding-top: 100%;
+            background: transparent;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%)
+        }
+        :hover:after{
+            animation: ripple-in .6s;
+          }
+        :active:after{
+            animation: ripple-out .6s;
+        }
+    }
+}
+//-----------------------------------------------------编辑页面公共less文件-----------------------------------------------------
+
+.pubPageTagP{         //每个标记页面的页眉
+    margin: 15px 0 15px 0;
+    color: #A7A7A7;
   }
+.publicEditFrom{
+    .el-form-item{
+        margin-bottom: 17px;
+    }
+    .pubSubmitBtn-row{
+        margin:50px 0 0 0;
+    }
+    .el-button+.el-button{
+        margin-left: 30px;
+    }
+}
+
+//-----------------------------------------------------btn区公共less文件-----------------------------------------------------
+
+@pubColorBlue:#3F7AB5;    //按钮蓝色背景颜色 --->查询
+@pubColorGree:#8BC34A;    //按钮绿色背景颜色 --->新建
+@pubColorGray:#A7A7A7;    //按钮灰色背景灰色 --->取消
+
+.pubBtn{       //查询条件的按钮样式
+    width: 80px;
+    height: 30px;
+    line-height: 26px;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    border:@pubBorder;
+    span{
+        display: block;
+    }
+}
+//查询条件的按钮样式  -->蓝色,      //L==>代表宽90px
+
+.pubBtnBlue{
+    .pubBtn();
+    background-color: @pubColorBlue;
+}
+.pubBtnBlueL{   
+    .pubBtn();
+    background-color: @pubColorBlue;
+    width: 90px;
+}
+
+//查询条件的按钮样式  -->绿色
+.pubBtnGree{       
+    .pubBtn();
+    background-color: @pubColorGree;
+}
+.pubBtnGreeL{       
+    .pubBtn();
+    background-color: @pubColorGree;
+    width: 90px;
+}
+.pubBtnGree140{        //width==>140px的宽度
+    .pubBtn();
+    background-color: @pubColorGree;
+    width: 140px;
+}
+//查询条件的按钮样式  -->灰色
+.pubBtnGray{       
+    .pubBtn();
+    background-color: @pubColorGray;
+}
+.pubBtnGrayL{       
+    .pubBtn();
+    background-color: @pubColorGray;
+    width: 90px;
+}
+
+//-----------------------------------------------------查询条件input区公共less文件-----------------------------------------------------
+////---------------------查询条件input公共宽度文件
+
+.pubIpt{                   //默认==>width150px
+    input{
+        width: 150px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 5px;
+        font-size: 14px;
+        border: 1px solid rgba(187, 187, 187, 1);
+        border: @pubBorder;
+    }
+
+}
+.pubIptS{                 //S==>width133px
+    .pubIpt();
+    width: 133px;
+    input{
+        width: 133px;
+    }
+}
+.pubIptL{                 //L==>width180px
+    .pubIpt();
+    width: 180px;
+    input{
+        width: 180px;
+    }
+}
+.pubIptB{                 //B==>width215px
+    .pubIpt();
+    width: 215px;
+    input{
+        width: 215px;
+    }
+}
+.pubIpt200{                 //B==>width215px
+    .pubIpt();
+    width: 200px;
+    input{
+        width: 200px;
+    }
+}
+
+
+//---------------------信息填写input公共宽度文件
+
+.pubSerIpt{                 //==>width400
+    .pubIpt();
+    width: 400px;
+    input{
+        width: 400px;
+    }
+}
+
+
+
+//-----------------------------------------------------查询条件Select区公共less文件-----------------------------------------------------
+.pubSlt{                   //默认==>width170px
+     input{
+        height: 30px;
+        width: 170px;
+        font-size: 14px;
+        border: @pubBorder;
+        color: #000000;
+     } 
+     .el-input__icon{
+        color: #000000 !important;
+        font-weight: 800;
+        line-height: 100%;
+    }
+
+}
+.pubSltS{                   //S==>width120px
+   .pubSlt();
+   input{
+    width:120px;
+   }
+}
+.pubSltL{                   //L==>width215px
+    .pubSlt();
+    input{
+     width:215px;
+    }
+ }
+ .pubSltR{                   //R==>width67px
+    .pubSlt();
+    input{
+     width:67px;
+    }
+ }
+ .pubSlt97{                   //T==>width97px
+    .pubSlt();
+    input{
+     width:97px;
+    }
+ }
+ .pubSlt200{                   //T==>width200px
+    .pubSlt();
+    input{
+     width:200px;
+    }
+ }
+ .pubSlt138{                   //T==>width138px
+    .pubSlt();
+    input{
+     width:138px;
+    }
+ }
+ .pubSlt60{                   //T==>width48px
+    .pubSlt();
+    input{
+     width:60px;
+    }
+ }
